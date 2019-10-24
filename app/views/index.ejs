@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html lang="pt-br">
+	<head>
+		<meta charset="UTF-8">
+		<title>Multiroom Chat</title>
+		<link rel="stylesheet" href="libs/bootstrap/index.css">
+		<link href="css/style.css" rel="stylesheet">
+	</head>
+	<body>
+		<main class="container-fluid d-flex align-items-center justify-content-center">
+            <div id="login-form-and-logo" class="col-md-4 bg-light rounded">
+                <div class="d-flex justify-content-center mt-3">
+                    <img src="images/multiroom_chat_2.png" alt="Multiroom Chat"/>
+                </div>
+                <form action="chat" method="POST" accept-charset="UTF-8" class="form-signin" role="form">
+                    <input type="text" id="apelido" name="apelido" class="form-control mt-4 mb-3" placeholder="Nome ou apelido">
+                    <input class="btn btn-lg btn-success btn-block mb-3" type="submit" value="Entrar »">
+                </form>
+                <div>
+                    <% if(erros.length) {%>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="alert alert-danger">
+                                    <strong>ATENÇÃO!</strong>
+                                    <ul>
+                                        <% erros.forEach(erro => { %>
+                                            <li><%= erro.msg %></li>
+                                        <% }); %>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </main>
+	</body>
+</html>
