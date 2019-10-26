@@ -1,10 +1,12 @@
 const socket = io.connect('http://localhost:3000', {query: 'hello=world'});
-socket.emit('newUser', {apelido: $('#apelido').val()});
+socket.on('connect', () => {
+    socket.emit('newUser', {apelido: $('#apelido').val(), id: $('#userId').val()});
+});
 
 socket.on('newMsgFromServer', data => {
     const html = 
         `<div class="dialogo py-3 px-4 my-2 border border-light rounded">
-            <h2>@${data.apelido}</h2>
+            <h2>@${data.apelido} - ID: ${data.id}</h2>
             <p class="lead ml-4">${data.mensagem}</p>
         </div>`;
     $('#dialogos').append(html);
@@ -12,10 +14,10 @@ socket.on('newMsgFromServer', data => {
 });
 
 socket.on('newUserJoinedTheThread', data => {
-    data.apelido.forEach(apelido => {
+    data.participantes.forEach(participante => {
         const html = `<p class="participante">
             <img src="images/ico_usuario.png">
-            ${apelido}
+            ${participante.apelido} - ID: ${participante.id}
         </p>`;
         $('#participantes').append(html);
     });
@@ -23,7 +25,7 @@ socket.on('newUserJoinedTheThread', data => {
 
 $('#sendMessageForm').submit(e => {
     e.preventDefault();
-    socket.emit('newMsgFromClient', {apelido: $('#apelido').val(), mensagem: $('#mensagem').val()});
+    socket.emit('newMsgFromClient', {id: $('#userId').val(), apelido: $('#apelido').val(), mensagem: $('#mensagem').val()});
     $('#mensagem').val('');
     $('#exibe_chat').click();
 });

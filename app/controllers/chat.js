@@ -10,12 +10,14 @@ module.exports = {
         if (!errors.isEmpty()) return res.render('index', {erros: errors.array()});
 
         const { apelido } = req.body;
+        const id = Date.now();
 
-        req.io.emit('msgParaCliente', {
+        req.io.emit('newMsgFromServer', {
             apelido,
+            id,
             mensagem: ` acabou de entrar no chat`
         });
         
-        res.render('chat', {apelido});
+        res.render('chat', {apelido, id});
     }
 };

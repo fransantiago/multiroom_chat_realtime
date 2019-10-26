@@ -29,19 +29,33 @@ consign()
     .then('app/models')
     .into(app);
 
-io.on('connection', socket => {    
-    socket.on('newUser', data => {
-        const escapedData = {apelido: utilsFunctions.escapeChars(data.apelido)};
-        if(!app.get('participantes').some(participante => participante === escapedData.apelido)){
-            app.get('participantes').push(escapedData.apelido);
+io.on('connection', socket => {
+    socket.on('disconnect', () => {
+        const userIndex = app.get('participantes').findIndex(participante => participante.socketId === socket.id);
+        app.get('participantes')[userIndex].status = 0;
 
-            socket.emit('newUserJoinedTheThread', {apelido: app.get('participantes')});
-            socket.broadcast.emit('newUserJoinedTheThread', {apelido: [escapedData.apelido] });
+        socket.broadcast.emit('newMsgFromServer', {
+            apelido: app.get('participantes')[userIndex].apelido,
+            id: app.get('participantes')[userIndex].id,
+            mensagem: ` saiu do chat.`
+        });
+    });
+
+    socket.on('newUser', data => {
+        const escapedData = {id: data.id, apelido: utilsFunctions.escapeChars(data.apelido)};
+
+        if(!app.get('participantes').some(participante => (participante.apelido === escapedData.apelido) && (participante.status))){
+            escapedData.socketId = socket.id;
+            escapedData.status = 1;
+
+            app.get('participantes').push(escapedData);
+            socket.emit('newUserJoinedTheThread', {participantes: app.get('participantes')});
+            socket.broadcast.emit('newUserJoinedTheThread', {participantes: [escapedData] });
         }
-    })
+    });
 
     socket.on('newMsgFromClient', data => {
-        const escapedData = {apelido: utilsFunctions.escapeChars(data.apelido), mensagem: utilsFunctions.escapeChars(data.mensagem)};
+        const escapedData = {id: data.id, apelido: utilsFunctions.escapeChars(data.apelido), mensagem: utilsFunctions.escapeChars(data.mensagem)};
         socket.emit('newMsgFromServer', escapedData);
         socket.broadcast.emit('newMsgFromServer', escapedData);
     });

@@ -6,7 +6,7 @@
 		<link rel="stylesheet" href="libs/bootstrap/index.css">
 		<link href="css/style.css" rel="stylesheet">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous"/>
-		<script src="js/jquery.js"></script>
+		<script src="../../js/jquery.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function(){
 				$("#exibe_chat").click(function(){
@@ -61,6 +61,7 @@
 			<div class="container">
 				<form id="sendMessageForm" class="form-inline">
 					<input type="hidden" id="apelido" value="<%= apelido %>">
+					<input type="hidden" id="userId" value="<%= id %>">
 					<input type="text" id="mensagem" class="form-control col-md-10 col-9" placeholder="Mensagem">
 					<button type="submit" id="submit" name="submit" class="btn btn-secondary col-sm-1 col-2 ml-3">
 						<i class="fas fa-angle-right"></i>
