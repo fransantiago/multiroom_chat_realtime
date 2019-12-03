@@ -1,2 +1,2 @@
-It's only for learn, practice and improve real time concepts using Node JS and Socket.IO.
+It's just for learning, practicing and improving real time concepts using Node JS and Socket.IO.
 No database connection.
